@@ -29,6 +29,15 @@ class Settings(BaseModel):
 
     secret_key: str = os.getenv("SECRET_KEY","change-me")
 
+    max_alloc_pct: float = float(os.getenv("MAX_ALLOC_PCT","0.25"))
+    risk_budget_eur: float = float(os.getenv("RISK_BUDGET_EUR","40"))
+    min_alloc_eur: float = float(os.getenv("MIN_ALLOC_EUR","10"))
+    tp1_pct: float = float(os.getenv("TP1_PCT","0.03"))
+    tp1_part: float = float(os.getenv("TP1_PART","0.5"))
+    trail_mode: str = os.getenv("TRAIL_MODE","ATR")  # ATR | PCT
+    trail_value: float = float(os.getenv("TRAIL_VALUE","2.0"))
+    paper_cash_eur: float = float(os.getenv("PAPER_CASH_EUR","140"))
+
     @property
     def dsn(self) -> str:
         return f"postgresql+psycopg2://{self.db_user}:{self.db_pwd}@{self.db_host}:{self.db_port}/{self.db_name}"

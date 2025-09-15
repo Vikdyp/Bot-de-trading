@@ -1,14 +1,10 @@
-from fastapi import APIRouter
-from ..config import settings
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from ..deps import get_db
+from ..services.portfolio import balances
 
 router = APIRouter()
 
 @router.get("/portfolio")
-def portfolio():
-    # Minimal: retourne juste budget alloué et mode
-    return {
-        "mode": settings.mode,
-        "budget_eur": settings.budget_eur,
-        "alloc_per_trade_eur": settings.alloc_per_trade_eur,
-        "max_concurrent_pos": settings.max_concurrent_pos
-    }
+def portfolio(db: Session = Depends(get_db)):
+    return balances(db)

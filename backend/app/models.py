@@ -44,12 +44,24 @@ class Trade(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     order: Mapped["Order"] = relationship("Order")
 
+class Portfolio(Base):
+    __tablename__ = "portfolio"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    cash_eur: Mapped[float] = mapped_column(Float, default=0.0)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
 class Position(Base):
     __tablename__ = "positions"
     symbol: Mapped[str] = mapped_column(String, primary_key=True)
     qty: Mapped[float] = mapped_column(Float, default=0.0)
     avg_price: Mapped[float] = mapped_column(Float, default=0.0)
     stop_price: Mapped[float] = mapped_column(Float, default=0.0)
+    # v2 – TP partiel & trailing
+    tp1_price: Mapped[float] = mapped_column(Float, default=0.0)
+    tp1_done: Mapped[bool] = mapped_column(Boolean, default=False)
+    trail_active: Mapped[bool] = mapped_column(Boolean, default=False)
+    trail_anchor: Mapped[float] = mapped_column(Float, default=0.0)   # plus haut atteint
+    trail_dist: Mapped[float] = mapped_column(Float, default=0.0)     # distance absolue (prix) du stop
     opened_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 

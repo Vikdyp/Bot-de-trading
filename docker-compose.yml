@@ -35,13 +35,13 @@ services:
     command: python -m app.services.engine
     restart: unless-stopped
 
-  frontend:
-    build: ./frontend
+  web_dashboard:
+    build:
+      context: ./web_dashboard
+    ports:
+      - "3000:3000"
     depends_on:
       - api
-    ports:
-      - "5173:80"
-    restart: unless-stopped
 
 volumes:
   db_data:
